@@ -132,7 +132,7 @@ const Home = ({ scrollToSection }) => {
       <AnimatedSection className="md:w-1/2 mb-8 md:mb-0 md:pl-16">
         {/* Placeholder for hero image. Replace the src value with your image URL. */}
         <img
-          src="./assets/IMG_0350.PNG"
+          src="https://res.cloudinary.com/dd9nujmdt/image/upload/v1757021437/IMG_0350_krtqd0.png"
           alt="Orogun Samuel profile"
           className="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover border-4 border-gray-700 shadow-2xl mx-auto animate-pulse-light"
         />
@@ -159,7 +159,7 @@ const About = () => {
         <div className="mb-6 md:mb-0 flex-shrink-0">
           {/* Placeholder for about image. Replace the src value with your image URL. */}
           <img
-            src="./assets/heroimg-main.jpg"
+            src="https://res.cloudinary.com/dd9nujmdt/image/upload/v1753978247/heroimg-main_tlb4pf.jpg"
             alt="Orogun Samuel profile"
             className="rounded-full w-48 h-48 object-cover border-4 border-gray-700  shadow-xl mx-auto md:mx-0"
           />
