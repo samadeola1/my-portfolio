@@ -182,6 +182,7 @@ const About = () => {
           <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <SkillItem label="React" />
             <SkillItem label="JavaScript" />
+            <SkillItem label="TypeScript" />
             <SkillItem label="Node.js" />
             <SkillItem label="Express.js" />
             <SkillItem label="MongoDB" />
@@ -190,6 +191,7 @@ const About = () => {
             <SkillItem label="Tailwind CSS" />
             <SkillItem label="Postman" />
             <SkillItem label="Figma" />
+            <SkillItem label="RESTful APIs" />
           </ul>
         </div>
       </div>
