@@ -1,413 +1,453 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import {
-  Home as HomeIcon,
-  User,
-  Briefcase,
-  Linkedin,
   Github,
-  Compass,
-  Sparkles,
-  Code,
-  Layout,
-  TrendingUp,
+  Linkedin,
   Mail,
-  Phone,
+  MapPin,
+  Atom,
+  Triangle,
+  Server,
+  Database,
+  Braces,
+  Wind,
   Send,
+  ArrowRight,
+  Twitter,
+  Download,
+  FileText,
 } from "lucide-react";
 
-// A reusable component for scroll-based animations.
-const AnimatedSection = ({ children, className }) => {
-  const [isVisible, setVisible] = useState(false);
-  const domRef = useRef();
+// --- Import your PNG Images Here ---
+import profileImg from "./assets/IMG_0350.PNG";
+import ticketingImg from "./assets/ticketing-app.png";
+import nisImg from "./assets/nis-project.png";
+import audiophileImg from "./assets/audiophile.png";
+import eggysImg from "./assets/eggys.png";
 
-  useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        setVisible(true);
-        observer.unobserve(domRef.current);
-      }
-    });
-    observer.observe(domRef.current);
-    return () => observer.disconnect();
-  }, []);
+// --- Animation Variants ---
+const textContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.05, delayChildren: 0.2 },
+  },
+};
 
-  return (
+const textLetter = {
+  hidden: { opacity: 0, y: 50, rotateX: -90 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    rotateX: 0,
+    transition: { type: "spring", damping: 12, stiffness: 200 },
+  },
+};
+
+const fadeInUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const staggerContainer = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.12 } },
+};
+
+const floatAnimation = {
+  y: [0, -12, 0],
+  transition: { duration: 5, repeat: Infinity, ease: "easeInOut" },
+};
+
+// --- Classic Minimalist Project Component ---
+const ProjectCard = ({ title, description, image, link, tags, reverse }) => (
+  <motion.div
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-100px" }}
+    variants={fadeInUp}
+    className={`relative flex flex-col ${
+      reverse ? "md:flex-row-reverse" : "md:flex-row"
+    } items-center justify-center mb-32 group`}
+  >
     <div
-      ref={domRef}
-      className={`${className} transition-all duration-1000 ease-out ${
-        isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-      }`}
+      className={`md:w-[50%] relative z-10 ${
+        reverse ? "md:-ml-12" : "md:-mr-12"
+      } mb-8 md:mb-0`}
     >
-      {children}
+      <div className="p-8 md:p-12 rounded-[2rem] bg-white/80 backdrop-blur-2xl border border-white/80 shadow-[0_20px_40px_rgba(44,42,37,0.04)] transition-all duration-500 group-hover:bg-white group-hover:-translate-y-2 group-hover:shadow-[0_30px_60px_rgba(44,42,37,0.08)]">
+        <div className="flex flex-wrap gap-2 mb-6">
+          {tags.map((tag, i) => (
+            <span
+              key={i}
+              className="px-4 py-1.5 text-[10px] font-bold tracking-widest uppercase rounded-full bg-[#EFECE5] text-[#8A7D6B] border border-[#E5E0D5]"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+        <h4 className="text-[#2C2A25] text-3xl font-bold mb-4 tracking-tight">
+          {title}
+        </h4>
+        <p className="text-[#6B655C] text-sm leading-relaxed mb-8">
+          {description}
+        </p>
+        <a
+          href={link}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#2C2A25] hover:bg-[#C46B47] text-white text-sm font-semibold transition-colors duration-300"
+        >
+          View Project <ArrowRight size={16} />
+        </a>
+      </div>
     </div>
-  );
-};
 
-// A small, reusable component for a navigation link button.
-const NavLink = ({ label, onClick }) => {
-  return (
-    <button
-      className="text-gray-400 hover:text-teal-500 transition-colors duration-200 focus:outline-none font-medium px-2 py-1 relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-0.5 after:bg-teal-500 after:transition-all after:duration-300 after:hover:w-full after:hover:left-0"
-      onClick={onClick}
-    >
-      <span>{label}</span>
-    </button>
-  );
-};
+    <div className="md:w-[55%] relative">
+      <div className="absolute inset-0 bg-[#C46B47] blur-[100px] opacity-5 group-hover:opacity-10 transition-opacity duration-700 rounded-[2rem]"></div>
+      <div className="relative aspect-[16/10] rounded-[2rem] bg-[#EBE7DF] overflow-hidden border border-white/60 transition-all duration-500 shadow-sm flex items-center justify-center p-4 md:p-8">
+        {image ? (
+          <motion.img
+            whileHover={{ scale: 1.04 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            src={image}
+            alt={title}
+            className="w-full h-full object-contain rounded-xl shadow-[0_10px_20px_rgba(44,42,37,0.1)]"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center bg-[#E6E1D6] rounded-xl">
+            <p className="text-[#A39B8E] font-medium text-sm tracking-widest uppercase">
+              [ Image Placeholder ]
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  </motion.div>
+);
 
-const Header = ({ scrollToSection, refs }) => {
+export default function App() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const isScrolled = window.scrollY > 20;
-      if (isScrolled !== scrolled) {
-        setScrolled(!scrolled);
-      }
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [scrolled]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  return (
-    <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-gray-900/80 backdrop-blur-md border-b border-gray-700"
-          : "bg-transparent"
-      }`}
-    >
-      <nav className="flex justify-between items-center max-w-6xl mx-auto p-4">
-        <button
-          className="text-2xl font-extrabold text-teal-500 hover:text-teal-400 transition-colors duration-300 focus:outline-none"
-          onClick={() => scrollToSection(refs.home)}
-        >
-          {/* Header is reverted to the original text-based title */}
-          Orogun Samuel
-        </button>
-
-        <div className="flex space-x-2 md:space-x-4">
-          <NavLink label="Home" onClick={() => scrollToSection(refs.home)} />
-          <NavLink label="About" onClick={() => scrollToSection(refs.about)} />
-          <NavLink
-            label="Projects"
-            onClick={() => scrollToSection(refs.projects)}
-          />
-          <NavLink
-            label="Contact"
-            onClick={() => scrollToSection(refs.contact)}
-          />
-        </div>
-      </nav>
-    </header>
-  );
-};
-
-const Home = ({ scrollToSection }) => {
-  return (
-    <div className="flex flex-col-reverse md:flex-row items-center justify-center p-8 text-center md:text-left animate-fade-in">
-      <AnimatedSection className="md:w-1/2 md:pr-16">
-        <p className="text-xl font-medium text-gray-400 mb-2">Hello, I'm</p>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-white mb-2">
-          Orogun Samuel
-        </h1>
-        <p className="text-lg md:text-xl font-semibold text-teal-500 mb-4 tracking-wider">
-          FULL-STACK DEVELOPER
-        </p>
-        <p className="text-gray-400 max-w-xl mx-auto md:mx-0 leading-relaxed mb-6">
-          I'm a passionate full-stack developer with a focus on building robust
-          and scalable web applications. My expertise spans the entire
-          development lifecycle, from designing user interfaces to architecting
-          powerful back-end systems.
-        </p>
-        <button
-          onClick={scrollToSection}
-          className="bg-teal-600 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:bg-teal-500 transition-all duration-300 transform hover:scale-105"
-        >
-          Hire Me
-        </button>
-      </AnimatedSection>
-      <AnimatedSection className="md:w-1/2 mb-8 md:mb-0 md:pl-16">
-        {/* Placeholder for hero image. Replace the src value with your image URL. */}
-        <img
-          src="https://res.cloudinary.com/dd9nujmdt/image/upload/v1757021437/IMG_0350_krtqd0.png"
-          alt="Orogun Samuel profile"
-          className="rounded-full w-64 h-64 md:w-80 md:h-80 object-cover border-4 border-gray-700 shadow-2xl mx-auto animate-pulse-light"
-        />
-      </AnimatedSection>
-    </div>
-  );
-};
-
-const SkillItem = ({ label }) => {
-  return (
-    <li className="bg-gray-700/50 text-teal-400 font-medium px-4 py-2 rounded-full text-center text-sm shadow-sm transition-all duration-300 hover:bg-teal-500 hover:text-white transform hover:scale-105 border border-gray-600">
-      {label}
-    </li>
-  );
-};
-
-const About = () => {
-  return (
-    <AnimatedSection className="p-8 rounded-3xl bg-gray-800/50 backdrop-blur-xl border border-gray-700 shadow-lg">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">
-        About Me
-      </h2>
-      <div className="flex flex-col md:flex-row items-center md:items-start md:space-x-8">
-        <div className="mb-6 md:mb-0 flex-shrink-0">
-          {/* Placeholder for about image. Replace the src value with your image URL. */}
-          <img
-            src="https://res.cloudinary.com/dd9nujmdt/image/upload/v1753978247/heroimg-main_tlb4pf.jpg"
-            alt="Orogun Samuel profile"
-            className="rounded-full w-48 h-48 object-cover border-4 border-gray-700  shadow-xl mx-auto md:mx-0"
-          />
-        </div>
-        <div className="flex-grow text-center md:text-left">
-          <p className="text-gray-400 leading-relaxed mb-6">
-            Hello! My name is Samuel, and I'm a full-stack developer with a
-            passion for building interactive web experiences. I specialize in
-            modern JavaScript frameworks like React, and I'm always eager to
-            learn new technologies.
-          </p>
-          <p className="text-gray-400 leading-relaxed">
-            I've been honing my skills in front-end development, focusing on
-            creating responsive and accessible user interfaces. On the backend,
-            I have experience with Node.js and various database technologies. My
-            goal is to create seamless, end-to-end solutions that deliver value
-            to users.
-          </p>
-          <h3 className="text-2xl font-bold text-white mt-6 mb-4">My Skills</h3>
-          <ul className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            <SkillItem label="React" />
-            <SkillItem label="JavaScript" />
-            <SkillItem label="TypeScript" />
-            <SkillItem label="Node.js" />
-            <SkillItem label="Express.js" />
-            <SkillItem label="MongoDB" />
-            <SkillItem label="Git" />
-            <SkillItem label="GitHub" />
-            <SkillItem label="Tailwind CSS" />
-            <SkillItem label="Postman" />
-            <SkillItem label="Figma" />
-            <SkillItem label="RESTful APIs" />
-          </ul>
-        </div>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const ProjectCard = ({ project }) => {
-  return (
-    <div className="bg-gray-700/50 p-6 rounded-xl shadow-md flex flex-col items-center text-center transition-all duration-300 hover:shadow-lg hover:bg-gray-600/50 transform hover:-translate-y-1 border border-gray-600">
-      <div className="mb-4">{project.icon}</div>
-      <h3 className="text-xl font-semibold text-white mb-2">{project.title}</h3>
-      <p className="text-gray-400 flex-grow mb-4">{project.description}</p>
-      <a
-        href={project.link}
-        className="text-teal-500 hover:text-teal-400 font-medium flex items-center transition-colors duration-200"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        View Project
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="lucide lucide-external-link ml-1"
-        >
-          <path d="M15 3h6v6" />
-          <path d="M10 14-7 15" />
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-        </svg>
-      </a>
-    </div>
-  );
-};
-
-const Projects = () => {
-  const projects = [
-    {
-      title: "Nigeria Immigration Service",
-      description:
-        "A full-stack application for managing Nigeria Immigration Service tasks.",
-      link: "https://github.com/samadeola1/Nigeria-Immigration-Service.git",
-      icon: <Layout size={48} className="text-teal-500" />,
-    },
-    {
-      title: "Eggys Place",
-      description:
-        "A website for a restaurant, showcasing menu and online ordering functionality.",
-      link: "https://github.com/samadeola1/eggys-place-project.git",
-      icon: <Sparkles size={48} className="text-teal-500" />,
-    },
-    {
-      title: "URL Shortener",
-      description: "A service to create and manage short links.",
-      link: "https://github.com/samadeola1/url-shortener",
-      icon: <Code size={48} className="text-teal-500" />,
-    },
-    {
-      title: "Construction Site",
-      description:
-        "A website for a construction company, detailing services and past projects.",
-      link: "https://github.com/samadeola1/Construction-site",
-      icon: <Briefcase size={48} className="text-teal-500" />,
-    },
+  const techStack = [
+    { name: "React", icon: Atom },
+    { name: "Next.js", icon: Triangle },
+    { name: "TypeScript", icon: Braces },
+    { name: "Node.js", icon: Server },
+    { name: "Tailwind CSS", icon: Wind },
+    { name: "MongoDB", icon: Database },
+    { name: "Postman", icon: Send },
   ];
 
-  return (
-    <AnimatedSection className="p-8 rounded-3xl bg-gray-800/50 backdrop-blur-xl border border-gray-700 shadow-lg">
-      <h2 className="text-3xl font-bold text-white mb-6 text-center">
-        My Projects
-      </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project, index) => (
-          <ProjectCard key={index} project={project} />
-        ))}
-      </div>
-    </AnimatedSection>
-  );
-};
-
-const Contact = () => {
-  return (
-    <AnimatedSection className="p-8 rounded-3xl bg-gray-800/50 backdrop-blur-xl border border-gray-700 shadow-lg text-center">
-      <h2 className="text-3xl font-bold text-white mb-4">Contact Me</h2>
-      <p className="text-gray-400 mb-8 max-w-xl mx-auto">
-        I'm always open to new opportunities and collaborations. Feel free to
-        get in touch through any of the channels below.
-      </p>
-
-      {/* Social and Contact Links */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-        <a
-          href="https://www.linkedin.com/in/samuel-orogun-59ba87362/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center p-6 bg-gray-700/50 rounded-xl shadow-lg transition-all duration-300 hover:bg-gray-600/50 transform hover:-translate-y-1 hover:shadow-xl border border-gray-600"
-        >
-          <Linkedin size={36} className="text-teal-500 mb-2" />
-          <span className="text-sm font-semibold text-white">LinkedIn</span>
-        </a>
-        <a
-          href="https://github.com/samadeola1"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center p-6 bg-gray-700/50 rounded-xl shadow-lg transition-all duration-300 hover:bg-gray-600/50 transform hover:-translate-y-1 hover:shadow-xl border border-gray-600"
-        >
-          <Github size={36} className="text-teal-500 mb-2" />
-          <span className="text-sm font-semibold text-white">GitHub</span>
-        </a>
-        <a
-          href="mailto:oroguns28@gmail.com"
-          className="flex flex-col items-center p-6 bg-gray-700/50 rounded-xl shadow-lg transition-all duration-300 hover:bg-gray-600/50 transform hover:-translate-y-1 hover:shadow-xl border border-gray-600"
-        >
-          <Mail size={36} className="text-teal-500 mb-2" />
-          <span className="text-sm font-semibold text-white">Email</span>
-        </a>
-        <a
-          href="https://wa.link/d1loxy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex flex-col items-center p-6 bg-gray-700/50 rounded-xl shadow-lg transition-all duration-300 hover:bg-gray-600/50 transform hover:-translate-y-1 hover:shadow-xl border border-gray-600"
-        >
-          <Phone size={36} className="text-teal-500 mb-2" />
-          <span className="text-sm font-semibold text-white">WhatsApp</span>
-        </a>
-      </div>
-    </AnimatedSection>
-  );
-};
-
-// This is the main application component, which handles state and routing for the portfolio.
-export default function App() {
-  // We'll use refs to reference each section of the single-page layout for smooth scrolling.
-  const homeRef = useRef(null);
-  const aboutRef = useRef(null);
-  const projectsRef = useRef(null);
-  const contactRef = useRef(null);
-
-  // Function to handle smooth scrolling to a specific section.
-  const scrollToSection = (elementRef) => {
-    window.scrollTo({
-      top: elementRef.current.offsetTop - 80, // Offset to account for the fixed header
-      behavior: "smooth",
-    });
-  };
+  const heroTitle = "Hi, I'm Samuel.";
 
   return (
-    <div className="bg-gray-900 text-gray-100 min-h-screen font-sans antialiased relative overflow-hidden">
-      {/* Dynamic background effect */}
-      <div className="absolute inset-0 z-0 opacity-20">
-        <svg
-          className="w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="xMidYMid slice"
-          viewBox="0 0 100 100"
-        >
-          <path fill="url(#pattern-circles)" d="M0 0h100v100H0z"></path>
-          <defs>
-            <pattern
-              id="pattern-circles"
-              x="0"
-              y="0"
-              width="10"
-              height="10"
-              patternUnits="userSpaceOnUse"
-              patternContentUnits="objectBoundingBox"
+    <div className="bg-[#F4F1EA] min-h-screen text-[#2C2A25] font-sans selection:bg-[#C46B47]/20 selection:text-[#2C2A25] overflow-x-hidden relative pt-32">
+      <div className="fixed top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-white blur-[150px] rounded-full pointer-events-none z-0 opacity-80"></div>
+      <div className="fixed bottom-[-10%] right-[10%] w-[60vw] h-[60vw] bg-[#E8E1D5] blur-[150px] rounded-full pointer-events-none z-0"></div>
+
+      <motion.nav
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className={`fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-3rem)] max-w-5xl transition-all duration-500 rounded-full flex justify-between items-center text-sm ${
+          scrolled
+            ? "bg-white/80 backdrop-blur-xl border border-white/60 shadow-[0_10px_40px_rgba(44,42,37,0.08)] px-4 py-2"
+            : "bg-transparent border-transparent px-2 py-4"
+        }`}
+      >
+        {/* --- Custom Geometric SO Logo --- */}
+        <div className="flex items-center gap-3 pl-2 cursor-pointer group">
+          <div className="relative flex items-center justify-center w-9 h-9">
+            {/* Back Accent Square */}
+            <div className="absolute inset-0 bg-[#C46B47] rounded-xl rotate-6 transition-transform duration-500 group-hover:rotate-12 opacity-90"></div>
+            {/* Front Charcoal Square */}
+            <div className="absolute inset-0 bg-[#2C2A25] rounded-xl -rotate-3 transition-transform duration-500 group-hover:-rotate-6 flex items-center justify-center shadow-md">
+              <span className="text-[#F4F1EA] font-black text-sm tracking-tighter">
+                SO
+              </span>
+            </div>
+          </div>
+          <span className="text-[#2C2A25] font-bold tracking-tight text-lg hidden sm:block">
+            Samuel<span className="text-[#C46B47]">.</span>
+          </span>
+        </div>
+
+        <div className="hidden md:flex gap-8 text-[#6B655C] font-medium px-6 py-2">
+          <a href="#" className="hover:text-[#C46B47] transition-colors">
+            Home
+          </a>
+          <a href="#" className="hover:text-[#C46B47] transition-colors">
+            About
+          </a>
+          <a href="#work" className="hover:text-[#C46B47] transition-colors">
+            Projects
+          </a>
+        </div>
+
+        <div className="flex items-center gap-2 pr-1">
+          <a
+            href="/Samuel_Orogun.pdf"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden md:flex items-center gap-2 px-4 py-2.5 rounded-full text-[#6B655C] font-semibold hover:bg-white hover:text-[#2C2A25] transition-all duration-300"
+          >
+            <FileText size={16} /> Resume
+          </a>
+          <a
+            href="mailto:oroguns28@gmail.com"
+            className="flex items-center gap-2 px-6 py-2.5 rounded-full bg-[#2C2A25] text-[#F4F1EA] font-semibold hover:bg-[#C46B47] transition-all duration-300 shadow-sm"
+          >
+            Let's Talk <Mail size={16} />
+          </a>
+        </div>
+      </motion.nav>
+
+      <main className="relative z-10 max-w-5xl mx-auto px-6 pt-10 pb-24 flex flex-col items-center text-center">
+        <div className="w-full flex flex-col items-center relative mb-20">
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-white/60 border border-white/80 text-[#6B655C] text-xs font-semibold tracking-widest uppercase mb-10 shadow-sm backdrop-blur-sm"
+          >
+            <MapPin size={14} className="text-[#C46B47]" /> Lagos, Nigeria
+          </motion.div>
+
+          <motion.h1
+            variants={textContainer}
+            initial="hidden"
+            animate="visible"
+            className="text-5xl md:text-7xl lg:text-[5.5rem] font-black text-[#2C2A25] tracking-tighter z-10 leading-[1.05] flex flex-wrap justify-center gap-x-4 mb-2"
+          >
+            {heroTitle.split(" ").map((word, i) => (
+              <span key={i} className="flex">
+                {word.split("").map((char, j) => (
+                  <motion.span key={j} variants={textLetter}>
+                    {char}
+                  </motion.span>
+                ))}
+              </span>
+            ))}
+          </motion.h1>
+
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="text-2xl md:text-4xl text-[#A39B8E] font-medium italic mb-12"
+          >
+            Software Engineer.
+          </motion.h2>
+
+          <div className="relative flex items-center justify-center gap-6 mb-10 w-full max-w-2xl">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="relative w-32 h-32 md:w-40 md:h-40 rounded-full p-2 bg-white shadow-[0_10px_30px_rgba(44,42,37,0.08)] z-10"
             >
-              <circle cx="5" cy="5" r="1.5" fill="#4B5563"></circle>
-            </pattern>
-          </defs>
-        </svg>
-      </div>
+              <div className="w-full h-full rounded-full bg-[#EBE7DF] overflow-hidden">
+                <img
+                  src={profileImg}
+                  alt="Samuel"
+                  className="w-full h-full object-cover rounded-full mix-blend-multiply opacity-90 hover:opacity-100 hover:mix-blend-normal transition-all duration-500"
+                />
+              </div>
+            </motion.div>
 
-      {/* The Header component is always visible and handles navigation. */}
-      <Header
-        scrollToSection={scrollToSection}
-        refs={{
-          home: homeRef,
-          about: aboutRef,
-          projects: projectsRef,
-          contact: contactRef,
-        }}
-      />
+            <motion.div
+              animate={floatAnimation}
+              className="absolute -right-4 md:-right-4 -top-8 md:-top-12 w-32 h-32 md:w-48 md:h-48 z-20 pointer-events-none drop-shadow-2xl opacity-90"
+            >
+              <img
+                src="https://static.vecteezy.com/system/resources/previews/011/153/360/original/3d-web-developer-working-on-project-illustration-png.png"
+                alt="3D Dev"
+                className="w-full h-full object-contain"
+              />
+            </motion.div>
+          </div>
 
-      {/* The main content area where the different portfolio sections will be rendered. */}
-      <main className="relative z-10 container mx-auto p-4 md:p-8">
-        <section
-          ref={homeRef}
-          className="min-h-screen pt-20 flex items-center justify-center"
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.2, duration: 1 }}
+            className="max-w-2xl text-[#6B655C] text-lg md:text-xl leading-relaxed mb-10 font-normal"
+          >
+            I craft clean, robust digital products. Specializing in modern web
+            architecture, I turn complex logic into intuitive, tactile
+            experiences that feel{" "}
+            <span className="text-[#C46B47] font-semibold italic">
+              effortless.
+            </span>
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.4, duration: 0.8 }}
+            className="flex flex-wrap justify-center gap-4"
+          >
+            <a
+              href="mailto:oroguns28@gmail.com"
+              className="flex items-center gap-2 px-8 py-4 rounded-full bg-[#2C2A25] text-white font-semibold hover:bg-[#C46B47] transition-all duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1"
+            >
+              Start a Project <ArrowRight size={18} />
+            </a>
+            <a
+              href="/Samuel_Orogun.pdf"
+              download="Samuel_Orogun.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 px-8 py-4 rounded-full bg-white/60 border border-white/80 text-[#2C2A25] font-semibold hover:bg-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 backdrop-blur-sm"
+            >
+              <Download size={18} className="text-[#6B655C]" /> Download CV
+            </a>
+          </motion.div>
+        </div>
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
+          className="w-full flex flex-col items-center mb-40 relative"
         >
-          <Home scrollToSection={() => scrollToSection(contactRef)} />
-        </section>
-        <section ref={aboutRef} className="py-20">
-          <About />
-        </section>
-        <section ref={projectsRef} className="py-20">
-          <Projects />
-        </section>
+          <motion.h3
+            variants={fadeInUp}
+            className="text-[#2C2A25] text-sm font-bold uppercase tracking-widest mb-10 text-[#8A7D6B]"
+          >
+            Core Technologies
+          </motion.h3>
+          <div className="flex flex-wrap justify-center gap-4 max-w-3xl w-full">
+            {techStack.map((tech, i) => (
+              <motion.div
+                key={i}
+                variants={fadeInUp}
+                whileHover={{ scale: 1.05, y: -2 }}
+                className="flex items-center gap-3 px-5 py-3 rounded-full bg-white/50 border border-white/80 shadow-sm hover:bg-white hover:shadow-md transition-all cursor-default group backdrop-blur-sm"
+              >
+                <tech.icon
+                  size={18}
+                  className="text-[#A39B8E] group-hover:text-[#C46B47] transition-colors"
+                />
+                <span className="text-[#2C2A25] font-semibold text-sm">
+                  {tech.name}
+                </span>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        <div id="work" className="w-full text-left pt-10">
+          <motion.h3
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-[#2C2A25] text-4xl md:text-5xl font-black mb-24 text-center tracking-tight"
+          >
+            Selected Works.
+          </motion.h3>
+
+          <ProjectCard
+            title="Event Ticketing Platform"
+            description="A fully functional event ticketing application featuring comprehensive CRUD operations and secure user authentication. Engineered to seamlessly manage event creation, secure purchasing, and digital ticket distribution."
+            tags={["Vue.js", "PHP & Twig", "Tailwind CSS"]}
+            link="https://ticket-webapp-rosy.vercel.app/"
+            image={ticketingImg}
+            reverse={false}
+          />
+
+          <ProjectCard
+            title="Nigeria Immigration Service"
+            description="A comprehensive full-stack platform designed for managing internal NIS tasks efficiently. Engineered to handle complex data workflows, state management, and strict user authentication."
+            tags={["React", "Node.js", "Enterprise UI"]}
+            link="https://nigeria-immigration-service.vercel.app/"
+            image={nisImg}
+            reverse={true}
+          />
+
+          <ProjectCard
+            title="Audiophile E-commerce"
+            description="A premium, high-performance e-commerce platform featuring complex state management for shopping carts, secure checkout flows, and flawless translation of Figma UI designs."
+            tags={["Next.js", "TypeScript", "Tailwind"]}
+            link="https://audiophile-nu-tawny.vercel.app/"
+            image={audiophileImg}
+            reverse={false}
+          />
+
+          <ProjectCard
+            title="Eggys Place"
+            description="A beautiful digital storefront for a modern restaurant, showcasing an interactive digital menu and seamless, intuitive online ordering functionality."
+            tags={["Frontend", "UI/UX", "Web Design"]}
+            link="https://eggys-place-project-flame.vercel.app/"
+            image={eggysImg}
+            reverse={true}
+          />
+        </div>
       </main>
 
-      {/* The contact section is a standalone component, but it's not wrapped in a section because we don't scroll to it. We will however add the ref to it so we can have a scroll effect */}
-      <section ref={contactRef} className="py-20">
-        <Contact />
-      </section>
+      <footer className="relative z-10 w-full pt-32 pb-12 px-6 text-center border-t border-[#EAE4D9] bg-gradient-to-t from-white/50 to-transparent">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          variants={fadeInUp}
+        >
+          <h3 className="text-[#2C2A25] text-4xl md:text-5xl font-black mb-6 tracking-tight">
+            Let's build something.
+          </h3>
+          <p className="text-[#6B655C] text-lg max-w-lg mx-auto mb-10 leading-relaxed">
+            Open for new opportunities and interesting freelance projects.
+          </p>
 
-      {/* A simple, clean footer. */}
-      <footer className="w-full text-center py-6 text-gray-500 text-sm relative z-10">
-        <p>
-          &copy; {new Date().getFullYear()} Orogun Samuel. All Rights Reserved.
-        </p>
+          <a
+            href="mailto:oroguns28@gmail.com"
+            className="inline-flex items-center justify-center gap-3 px-10 py-5 bg-[#2C2A25] text-[#F4F1EA] rounded-full font-bold text-lg hover:bg-[#C46B47] transition-all hover:scale-105 active:scale-95 mb-16 shadow-[0_10px_30px_rgba(44,42,37,0.15)]"
+          >
+            Say Hello <ArrowRight size={20} />
+          </a>
+
+          <div className="flex justify-center gap-6 mb-12">
+            <a
+              href="https://x.com/Ade_ola00"
+              target="_blank"
+              rel="noreferrer"
+              className="w-14 h-14 rounded-full bg-white border border-[#EAE4D9] flex items-center justify-center text-[#6B655C] hover:text-[#C46B47] hover:border-[#C46B47]/30 hover:-translate-y-1 transition-all shadow-sm"
+            >
+              <Twitter size={22} />
+            </a>
+            <a
+              href="https://github.com/samadeola1"
+              target="_blank"
+              rel="noreferrer"
+              className="w-14 h-14 rounded-full bg-white border border-[#EAE4D9] flex items-center justify-center text-[#6B655C] hover:text-[#C46B47] hover:border-[#C46B47]/30 hover:-translate-y-1 transition-all shadow-sm"
+            >
+              <Github size={22} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/samuel-orogun-59ba87362/"
+              target="_blank"
+              rel="noreferrer"
+              className="w-14 h-14 rounded-full bg-white border border-[#EAE4D9] flex items-center justify-center text-[#6B655C] hover:text-[#C46B47] hover:border-[#C46B47]/30 hover:-translate-y-1 transition-all shadow-sm"
+            >
+              <Linkedin size={22} />
+            </a>
+          </div>
+          <p className="text-[#A39B8E] text-xs font-medium uppercase tracking-widest">
+            © {new Date().getFullYear()} Samuel Orogun
+          </p>
+        </motion.div>
       </footer>
     </div>
   );
