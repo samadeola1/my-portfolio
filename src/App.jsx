@@ -28,7 +28,7 @@ export default function App() {
 
         {/* PDF is in the public folder, so it uses an absolute path */}
         <a
-          href="/Samuel_Orogun.pdf"
+          href="/Samuel-A-Orogun_CV.pdf"
           target="_blank"
           rel="noopener noreferrer"
           className="bg-black text-white px-6 py-3 rounded-2xl text-sm font-medium hover:bg-gray-800 transition-colors shadow-sm"
@@ -351,7 +351,7 @@ export default function App() {
           projects, or full-stack opportunities.
         </p>
         <a
-          href="mailto:your.email@example.com"
+          href="mailto:oroguns28@gmail.com"
           className="bg-black text-white px-10 py-5 rounded-[2rem] text-base font-medium hover:bg-gray-800 transition-transform hover:scale-105 shadow-xl inline-flex items-center gap-3"
         >
           Get in Touch
